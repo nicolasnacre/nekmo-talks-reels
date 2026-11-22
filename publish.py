@@ -44,6 +44,7 @@ with zipfile.ZipFile(zpath) as z:
         shutil.copyfileobj(src, dst)
 os.remove(zpath)
 print("vidéo extraite :", os.path.getsize(out), "octets")
+if os.path.getsize(out) > 90_000_000: subprocess.run(["ffmpeg", "-y", "-i", out, "-c:v", "libx264", "-crf", "26", "-preset", "fast", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", out + ".s.mp4"], check=True); os.replace(out + ".s.mp4", out); print("video compressee :", os.path.getsize(out))
 
 # 3) héberger temporairement la vidéo sur la branche orpheline "media"
 def sh(*a):
