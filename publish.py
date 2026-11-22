@@ -44,7 +44,7 @@ with zipfile.ZipFile(zpath) as z:
         shutil.copyfileobj(src, dst)
 os.remove(zpath)
 print("vidéo extraite :", os.path.getsize(out), "octets")
-if os.path.getsize(out) > 90_000_000: subprocess.run([sys.executable, "-m", "pip", "install", "-q", "imageio-ffmpeg"], check=True); import imageio_ffmpeg; subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-i", out, "-c:v", "libx264", "-crf", "26", "-preset", "fast", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", out + ".s.mp4"], check=True); os.replace(out + ".s.mp4", out); print("video compressee :", os.path.getsize(out))
+if os.path.getsize(out) > 90_000_000: subprocess.run([sys.executable, "-m", "pip", "install", "-q", "imageio-ffmpeg"], check=True); ff = subprocess.check_output([sys.executable, "-c", "import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())"]).decode().strip(); subprocess.run([ff, "-y", "-i", out, "-c:v", "libx264", "-crf", "26", "-preset", "fast", "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", out + ".s.mp4"], check=True); os.replace(out + ".s.mp4", out); print("video compressee :", os.path.getsize(out))
 
 # 3) héberger temporairement la vidéo sur la branche orpheline "media"
 def sh(*a):
